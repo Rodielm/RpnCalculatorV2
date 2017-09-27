@@ -2,30 +2,34 @@ package rmjsoft.rpncalculatorv2;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
 import java.util.Stack;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final char ADDITION = '+';
-    private static final char SUBTRACTION = '-';
-    private static final char MULTIPLICATION = '*';
-    private static final char DIVISION = '/';
+    private static final String ADDITION = "+";
+    private static final String SUBTRACTION = "-";
+    private static final String MULTIPLICATION = "*";
+    private static final String DIVISION = "/";
+    private static final DecimalFormat decimalFormat = new DecimalFormat("0.#");
 
     private static final String MESSAGE = "Tiene menos de dos elemento para realizar la operación";
     private static final String MESSAGE2 = "Se borró todos los datos del Stack";
     private static final String MESSAGE3 = "Tiene el Stack vacío.";
     private static final String MESSAGE4 = "Se borró el ultimo elemento del Stack";
 
+    private double firstOperation = Double.NaN;
+    private double secondOperation = Double.NaN;
+    private String result;
 
     private EditText editText;
     private TextView textView;
-    private Stack<Integer> st = new Stack();
+    private Stack<String> st = new Stack();
 
     private char CURRENT_ACTION;
 
@@ -45,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.btn7).setOnClickListener(this);
         findViewById(R.id.btn8).setOnClickListener(this);
         findViewById(R.id.btn9).setOnClickListener(this);
+        findViewById(R.id.btnPeriod).setOnClickListener(this);
 
         // Commands
         findViewById(R.id.btnC).setOnClickListener(this);
@@ -67,36 +72,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
 
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btn0:
-                editText.setText( editText.getText() + "0");
+                editText.setText(editText.getText() + "0");
                 break;
             case R.id.btn1:
-                editText.setText( editText.getText() + "1");
+                editText.setText(editText.getText() + "1");
                 break;
             case R.id.btn2:
-                editText.setText( editText.getText() + "2");
+                editText.setText(editText.getText() + "2");
                 break;
             case R.id.btn3:
-                editText.setText( editText.getText() + "3");
+                editText.setText(editText.getText() + "3");
                 break;
             case R.id.btn4:
-                editText.setText( editText.getText() + "4");
+                editText.setText(editText.getText() + "4");
                 break;
             case R.id.btn5:
-                editText.setText( editText.getText() + "5");
+                editText.setText(editText.getText() + "5");
                 break;
             case R.id.btn6:
-                editText.setText( editText.getText() + "6");
+                editText.setText(editText.getText() + "6");
                 break;
             case R.id.btn7:
-                editText.setText( editText.getText() + "7");
+                editText.setText(editText.getText() + "7");
                 break;
             case R.id.btn8:
-                editText.setText( editText.getText() + "8");
+                editText.setText(editText.getText() + "8");
                 break;
             case R.id.btn9:
-                editText.setText( editText.getText() + "9");
+                editText.setText(editText.getText() + "9");
+                break;
+            case R.id.btnPeriod:
+                if (editText.getText().length() > 0){
+                        if(!editText.getText().toString().contains(".")) {
+                            editText.setText(editText.getText() + ".");
+                        }
+                }
                 break;
             case R.id.btnC:
                 editText.setText("");
@@ -120,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 editText.setText(editText.getText() + "/");
                 break;
             case R.id.btnE:
-                if(isNumber(editText.getText().toString())){
+                if(!editText.getText().toString().isEmpty()){
                     pushStack(st,editText.getText().toString());
                     textView.setText(st.toString());
                     editText.setText("");
@@ -134,12 +146,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     }
-
-    private void pushStack(Stack<Integer> st, String a){
-        st.push(new Integer(a));
+//
+    private void pushStack(Stack st, String a){
+        String decimal = decimalFormat.format(a);
+        st.push(decimal);
     }
 
-    private void popStack(Stack<Integer> st){
+    private void popStack(Stack st){
         if(!st.isEmpty()){
             st.pop();
             showMessage(MESSAGE4,Toast.LENGTH_SHORT);
@@ -149,29 +162,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void sumStack(Stack<Integer> st){
-        int b = st.pop();
-        int a = st.pop();
-        st.push(a + b);
+    private void sumStack(Stack<String> st){
+        secondOperation = Double.parseDouble(st.pop());
+        firstOperation = Double.parseDouble(st.pop());
+        result = String.valueOf(secondOperation + firstOperation);
+        st.push(result);
     }
 
-    private void resStack(Stack<Integer> st){
-        int b = st.pop();
-        int a = st.pop();
-        st.push(a - b);
+    private void resStack(Stack<String> st){
+        secondOperation = Double.parseDouble(st.pop());
+        firstOperation = Double.parseDouble(st.pop());
+        result = String.valueOf(firstOperation - secondOperation);
+        st.push(result);
     }
 
-    private void multStack(Stack<Integer> st){
-        int b = st.pop();
-        int a = st.pop();
-        st.push(a * b);
+    private void multStack(Stack<String> st){
+        secondOperation = Double.parseDouble(st.pop());
+        firstOperation = Double.parseDouble(st.pop());
+        result = String.valueOf(firstOperation * secondOperation);
+        st.push(result);
     }
 
-    private void divStack(Stack<Integer> st){
-        if (st.peek() != 0){
-            int b = st.pop();
-            int a = st.pop();
-            st.push(a / b);
+    private void divStack(Stack<String> st){
+        if (st.peek() != "0"){
+            secondOperation = Double.parseDouble(st.pop());
+            firstOperation = Double.parseDouble(st.pop());
+            result = String.valueOf(firstOperation / secondOperation);
+            st.push(result);
         }else{
             showMessage("Error: No se puede dividir con 0, intente con otro operador o elimine el elemento",Toast.LENGTH_SHORT);
         }
@@ -180,12 +197,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean isNumber(String x){
         boolean flag = false;
         if(!x.isEmpty()){
-           flag = TextUtils.isDigitsOnly(x);
+           // flag = TextUtils.isDigitsOnly(x);
+            flag = true;
         }
         return flag;
     }
 
-    public boolean hasMoreTwoElement(Stack<Integer> st){
+    public boolean hasMoreTwoElement(Stack<String> st){
         if(st.size()>1){
             return true;
         }
@@ -195,28 +213,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void switchOperation(String x, Stack st){
 
         switch (x){
-            case "+":
+            case ADDITION:
                 if(hasMoreTwoElement(st)){
                     sumStack(st);
                 }else{
                     showMessage(MESSAGE,Toast.LENGTH_SHORT);
                 }
                 break;
-            case "-":
+            case SUBTRACTION:
                 if(hasMoreTwoElement(st)){
                     resStack(st);
                 }else{
                     showMessage(MESSAGE, Toast.LENGTH_SHORT);
                 }
                 break;
-            case "*":
+            case MULTIPLICATION:
                 if(hasMoreTwoElement(st)){
                     multStack(st);
                 }else{
                     showMessage(MESSAGE,Toast.LENGTH_SHORT);
                 }
                 break;
-            case "/":
+            case DIVISION:
                 if(hasMoreTwoElement(st)){
                     divStack(st);
                 }else{
@@ -234,7 +252,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
     }
 
-    public void clearStack(Stack<Integer> st){
+    public void clearStack(Stack<String> st){
         if(!st.isEmpty()){
             st.clear();
             showMessage(MESSAGE2, Toast.LENGTH_SHORT);

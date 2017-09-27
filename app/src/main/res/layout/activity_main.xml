@@ -161,11 +161,20 @@
         android:text="-"
         android:textSize="20sp"/>
 
+   <Button
+       android:id="@+id/btnPeriod"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_below="@id/btn1"
+       android:text="."
+       android:textSize="20sp"/>
+
     <Button
         android:id="@+id/btn0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btn1"
+        android:layout_below="@id/btn2"
+        android:layout_toRightOf="@id/btnPeriod"
         android:text="0"
         android:textSize="20sp"/>
 
@@ -173,7 +182,7 @@
         android:id="@+id/btnE"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btn2"
+        android:layout_below="@id/btn3"
         android:layout_toRightOf="@+id/btn0"
         android:text="Enter"
         android:textSize="20sp"
