@@ -2,6 +2,7 @@ package rmjsoft.rpncalculatorv2;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -132,11 +133,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 editText.setText(editText.getText() + "/");
                 break;
             case R.id.btnE:
-                if(!editText.getText().toString().isEmpty()){
-                    pushStack(st,editText.getText().toString());
+                if(isDecimal(editText.getText().toString())) {
+                    pushStack(st, editText.getText().toString());
                     textView.setText(st.toString());
                     editText.setText("");
-                }else{
+                }else if(isNumber(editText.getText().toString())){
+                    pushStack(st, editText.getText().toString());
+                    textView.setText(st.toString());
+                    editText.setText("");
+                    }
+                else{
                     switchOperation(editText.getText().toString(),st);
                     textView.setText(st.toString());
                     editText.setText("");
@@ -148,8 +154,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 //
     private void pushStack(Stack st, String a){
-        String decimal = decimalFormat.format(a);
+        String decimal = formatDecimal(a);
         st.push(decimal);
+    }
+
+    private String formatDecimal(String number){
+        double num = Double.parseDouble(number);
+        String decimal = decimalFormat.format(num);
+        return decimal;
     }
 
     private void popStack(Stack st){
@@ -165,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void sumStack(Stack<String> st){
         secondOperation = Double.parseDouble(st.pop());
         firstOperation = Double.parseDouble(st.pop());
-        result = String.valueOf(secondOperation + firstOperation);
+        result = formatDecimal(String.valueOf(secondOperation + firstOperation));
         st.push(result);
     }
 
@@ -197,8 +209,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean isNumber(String x){
         boolean flag = false;
         if(!x.isEmpty()){
-           // flag = TextUtils.isDigitsOnly(x);
-            flag = true;
+            flag = TextUtils.isDigitsOnly(x);
+        }
+        return flag;
+    }
+
+    public boolean isDecimal(String text){
+        boolean flag = false;
+        if(!text.isEmpty()) {
+            if (text.contains(".")) {
+                flag = true;
+            }
         }
         return flag;
     }
