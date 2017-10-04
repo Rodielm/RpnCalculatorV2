@@ -17,12 +17,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String SUBTRACTION = "-";
     private static final String MULTIPLICATION = "*";
     private static final String DIVISION = "/";
-    private static final DecimalFormat decimalFormat = new DecimalFormat("0.#");
+    private static final DecimalFormat decimalFormat = new DecimalFormat("0.##");
 
     private static final String MESSAGE = "Tiene menos de dos elemento para realizar la operación";
     private static final String MESSAGE2 = "Se borró todos los datos del Stack";
     private static final String MESSAGE3 = "Tiene el Stack vacío.";
     private static final String MESSAGE4 = "Se borró el ultimo elemento del Stack";
+
+
 
     private double firstOperation = Double.NaN;
     private double secondOperation = Double.NaN;
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.btn8).setOnClickListener(this);
         findViewById(R.id.btn9).setOnClickListener(this);
         findViewById(R.id.btnPeriod).setOnClickListener(this);
+        findViewById(R.id.btnSpace).setOnClickListener(this);
 
         // Commands
         findViewById(R.id.btnC).setOnClickListener(this);
@@ -68,6 +71,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Componentes
         editText = (EditText) findViewById(R.id.txtEdit);
         textView = (TextView) findViewById(R.id.txtStack);
+
+
+
+
     }
 
     @Override
@@ -133,24 +140,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 editText.setText(editText.getText() + "/");
                 break;
             case R.id.btnE:
-                if(isDecimal(editText.getText().toString())) {
-                    pushStack(st, editText.getText().toString());
-                    textView.setText(st.toString());
-                    editText.setText("");
-                }else if(isNumber(editText.getText().toString())){
-                    pushStack(st, editText.getText().toString());
-                    textView.setText(st.toString());
-                    editText.setText("");
-                    }
-                else{
-                    switchOperation(editText.getText().toString(),st);
-                    textView.setText(st.toString());
-                    editText.setText("");
-                }
+                    computeMath(editText.getText().toString());
+                break;
+            case R.id.btnSpace:
+                editText.setText(editText.getText() + " ");
                 break;
         }
-
-
     }
 //
     private void pushStack(Stack st, String a){
@@ -184,14 +179,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void resStack(Stack<String> st){
         secondOperation = Double.parseDouble(st.pop());
         firstOperation = Double.parseDouble(st.pop());
-        result = String.valueOf(firstOperation - secondOperation);
+        result = formatDecimal(String.valueOf(firstOperation - secondOperation));
         st.push(result);
     }
 
     private void multStack(Stack<String> st){
         secondOperation = Double.parseDouble(st.pop());
         firstOperation = Double.parseDouble(st.pop());
-        result = String.valueOf(firstOperation * secondOperation);
+        result = formatDecimal(String.valueOf(firstOperation * secondOperation));
         st.push(result);
     }
 
@@ -199,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (st.peek() != "0"){
             secondOperation = Double.parseDouble(st.pop());
             firstOperation = Double.parseDouble(st.pop());
-            result = String.valueOf(firstOperation / secondOperation);
+            result = formatDecimal(String.valueOf(firstOperation / secondOperation));
             st.push(result);
         }else{
             showMessage("Error: No se puede dividir con 0, intente con otro operador o elimine el elemento",Toast.LENGTH_SHORT);
@@ -218,7 +213,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         boolean flag = false;
         if(!text.isEmpty()) {
             if (text.contains(".")) {
-                flag = true;
+                if(isNumber(text.replace(".",""))){
+                    flag = true;
+                }
             }
         }
         return flag;
@@ -281,6 +278,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }else{
             showMessage(MESSAGE3,Toast.LENGTH_SHORT);
         }
+    }
+
+    public void computeMath(String number){
+        String[] numb = number.split(" ");
+        for (String num : numb ) {
+            if(isDecimal(num)) {
+                pushStack(st, num);
+                textView.setText(st.toString());
+                editText.setText("");
+            }else if(isNumber(num)){
+                pushStack(st, num);
+                textView.setText(st.toString());
+                editText.setText("");
+            }
+            else {
+                switchOperation(num, st);
+                textView.setText(st.toString());
+                editText.setText("");
+            }
+        }
+
     }
 
 
