@@ -232,33 +232,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         switch (x){
             case ADDITION:
-                if(hasMoreTwoElement(st)){
-                    sumStack(st);
-                }else{
-                    showMessage(MESSAGE,Toast.LENGTH_SHORT);
-                }
+                sumStack(st);
                 break;
             case SUBTRACTION:
-                if(hasMoreTwoElement(st)){
-                    resStack(st);
-                }else{
-                    showMessage(MESSAGE, Toast.LENGTH_SHORT);
-                }
+                resStack(st);
                 break;
             case MULTIPLICATION:
-                if(hasMoreTwoElement(st)){
-                    multStack(st);
-                }else{
-                    showMessage(MESSAGE,Toast.LENGTH_SHORT);
-                }
-                break;
+               multStack(st);
+               break;
             case DIVISION:
-                if(hasMoreTwoElement(st)){
-                    divStack(st);
-                }else{
-                    showMessage(MESSAGE,Toast.LENGTH_SHORT);
-                }
-                break;
+               divStack(st);
+               break;
             default:
                 Toast.makeText(this, "Comando invalido", Toast.LENGTH_SHORT).show();
                 break;
@@ -283,6 +267,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void computeMath(String number){
         String[] numb = number.split(" ");
         for (String num : numb ) {
+
             if(isDecimal(num)) {
                 pushStack(st, num);
                 textView.setText(st.toString());
@@ -293,9 +278,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 editText.setText("");
             }
             else {
-                switchOperation(num, st);
-                textView.setText(st.toString());
-                editText.setText("");
+                if(hasMoreTwoElement(st)) {
+                    switchOperation(num, st);
+                    textView.setText(st.toString());
+                    editText.setText("");
+                }else{
+                    showMessage(MESSAGE,Toast.LENGTH_SHORT);
+                    break;
+                }
             }
         }
 
