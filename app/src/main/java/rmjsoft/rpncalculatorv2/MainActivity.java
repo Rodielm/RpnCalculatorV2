@@ -32,9 +32,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private EditText editText;
     private TextView textView;
-    private Stack<String> st = new Stack();
 
-    private char CURRENT_ACTION;
+    @SuppressWarnings("unchecked")
+    private Stack<String> st = new Stack();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,6 +150,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 //
+    @SuppressWarnings("unchecked")
     private void pushStack(Stack st, String a){
         String decimal = formatDecimal(a);
         st.push(decimal);
@@ -157,8 +158,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private String formatDecimal(String number){
         double num = Double.parseDouble(number);
-        String decimal = decimalFormat.format(num);
-        return decimal;
+        return decimalFormat.format(num);
     }
 
     private void popStack(Stack st){
@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return flag;
     }
 
-    public boolean isDecimal(String text){
+    private boolean isDecimal(String text){
         boolean flag = false;
         if(!text.isEmpty()) {
             if (text.contains(".")) {
@@ -223,14 +223,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return flag;
     }
 
-    public boolean hasMoreTwoElement(Stack<String> st){
-        if(st.size()>1){
-            return true;
-        }
-        return false;
+    private boolean hasMoreTwoElement(Stack<String> st){
+        return st.size() > 1;
     }
 
-    public void switchOperation(String x, Stack st){
+    @SuppressWarnings("unchecked")
+    private void switchOperation(String x, Stack st){
 
         switch (x){
             case ADDITION:
@@ -252,11 +250,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public void showMessage(String message, int duration){
+    private void showMessage(String message, int duration){
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
     }
 
-    public void clearStack(Stack<String> st){
+    private void clearStack(Stack<String> st){
         if(!st.isEmpty()){
             st.clear();
             showMessage(MESSAGE2, Toast.LENGTH_SHORT);
@@ -266,7 +264,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public void computeMath(String number){
+    private void computeMath(String number){
         String[] numb = number.split(" ");
         for (String num : numb ) {
 
