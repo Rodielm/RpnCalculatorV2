@@ -1,8 +1,12 @@
 package rmjsoft.rpncalculatorv2;
 
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -41,7 +45,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Ayuda");
+        builder.setMessage("C(clean): Para limpiar la entrada\n" +
+                "R(reset): Para reiniciar las operacion desde cero\n" +
+                "P(eliminar): Para eliminar el último elemento agregado");
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
 
+        AlertDialog help = builder.create();
+        help.show();
 
         // Numbers
         findViewById(R.id.btn0).setOnClickListener(this);
@@ -72,13 +89,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Componentes
         editText = (EditText) findViewById(R.id.txtEdit);
+        editText.setMovementMethod(new ScrollingMovementMethod());
         textView = (TextView) findViewById(R.id.txtStack);
-
+        textView.setMovementMethod(new ScrollingMovementMethod());
 
 
 
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onClick(View view) {
 
@@ -90,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 editText.setText(editText.getText() + "1");
                 break;
             case R.id.btn2:
-                editText.setText(editText.getText() + "2");
+                editText.setText(editText.getText() + "2" );
                 break;
             case R.id.btn3:
                 editText.setText(editText.getText() + "3");
@@ -133,13 +152,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 editText.setText(editText.getText() + "+");
                 break;
             case R.id.btnRes:
-                editText.setText(editText.getText() + "-");
+                editText.setText(editText.getText() + "-" );
                 break;
             case R.id.btnX:
-                editText.setText(editText.getText() + "*");
+                editText.setText(editText.getText() + "*" );
                 break;
             case R.id.btnD:
-                editText.setText(editText.getText() + "/");
+                editText.setText(editText.getText() + "P");
                 break;
             case R.id.btnE:
                     computeMath(editText.getText().toString());
@@ -164,10 +183,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void popStack(Stack st){
         if(!st.isEmpty()){
             st.pop();
-            showMessage(MESSAGE4,Toast.LENGTH_SHORT);
+            showMessage(MESSAGE4);
             textView.setText(st.toString());
         }else{
-            showMessage(MESSAGE3,Toast.LENGTH_SHORT);
+            showMessage(MESSAGE3);
         }
     }
 
@@ -199,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             result = formatDecimal(String.valueOf(firstOperation / secondOperation));
             st.push(result);
         }else{
-            showMessage("Error: No se puede dividir con 0, intente con otro operador o elimine el elemento",Toast.LENGTH_SHORT);
+            showMessage("Error: No se puede dividir con 0, intente con otro operador o elimine el elemento");
         }
     }
 
@@ -244,23 +263,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                divStack(st);
                break;
             default:
-                Toast.makeText(this, "Comando invalido", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Operación invalida", Toast.LENGTH_SHORT).show();
                 break;
         }
 
     }
 
-    private void showMessage(String message, int duration){
+    private void showMessage(String message){
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
     }
 
     private void clearStack(Stack<String> st){
         if(!st.isEmpty()){
             st.clear();
-            showMessage(MESSAGE2, Toast.LENGTH_SHORT);
+            showMessage(MESSAGE2);
             textView.setText(st.toString());
         }else{
-            showMessage(MESSAGE3,Toast.LENGTH_SHORT);
+            showMessage(MESSAGE3);
         }
     }
 
@@ -283,7 +302,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     textView.setText(st.toString());
                     editText.setText("");
                 }else{
-                    showMessage(MESSAGE,Toast.LENGTH_SHORT);
+                    showMessage(MESSAGE);
                     break;
                 }
             }
