@@ -29,5 +29,6 @@
 
     <!--Messages-->
     <string name="enter_number_or_operation">Introduce un número u operaciones</string>
+    <string name="help">Help</string>
 
 </resources>

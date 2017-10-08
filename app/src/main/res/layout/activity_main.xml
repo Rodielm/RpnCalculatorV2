@@ -18,7 +18,7 @@
         android:layout_marginBottom="30dp"
         android:scrollbars="vertical"
         android:textSize="30sp"
-        android:maxLines="2"/>
+        />
 
     <EditText
         android:id="@+id/txtEdit"
@@ -26,12 +26,10 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:scrollbars="vertical"
-        android:enabled="false"
+        android:enabled="true"
+        android:inputType="none"
         android:gravity="bottom"
         android:textColor="@color/black"
-        android:lines="2"
-        android:maxLines="2"
-
         android:hint="@string/enter_number_or_operation"
         android:textSize="28sp"/>
 
