@@ -18,8 +18,8 @@ My version of the Polish inverse notation calculator (New UI!)
 <img src="https://github.com/Rodielm/prj-cursobasico-1/blob/master/help.png" width="49%"/>
 </div>
 
-<div>
- <img src="https://github.com/Rodielm/prj-cursobasico-1/blob/master/demo.gif" style="max-width: 30% !important; height: 500px;" title="Calcapp" />
+<div style="max-width=50%">
+ <img src="https://github.com/Rodielm/prj-cursobasico-1/blob/master/demo.gif" style="max-width: 50%; height: 500px;" title="Calcapp" />
 </div>
 
 
