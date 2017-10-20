@@ -19,7 +19,7 @@ My version of the Polish inverse notation calculator (New UI!)
 </div>
 
 <div>
- <img src="https://github.com/Rodielm/prj-cursobasico-1/blob/master/demo.gif" style="max-width: 30%; height: 500px;" title="Calcapp" />
+ <img src="https://github.com/Rodielm/prj-cursobasico-1/blob/master/demo.gif" style="max-width: 30% !important; height: 500px;" title="Calcapp" />
 </div>
 
 
