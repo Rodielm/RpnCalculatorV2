@@ -1,19 +1,22 @@
 package rmjsoft.rpncalculatorv2;
 
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.aviran.cookiebar2.CookieBar;
+import org.aviran.cookiebar2.OnActionClickListener;
 
 import java.text.DecimalFormat;
 import java.util.Stack;
@@ -47,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         showHelp();
 
         // Numbers
@@ -294,7 +297,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void showMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+//        GentleToast.with(this).shortToast(message,GentleToast.DONE).show();
+        CookieBar.Build(MainActivity.this)
+                .setMessage(message)
+                .setTitle("Aviso")
+                .setBackgroundColor(R.color.colorBrothersD)
+                .setLayoutGravity(Gravity.BOTTOM)
+                .setDuration(5000)
+                .show();
     }
 
     private void clearStack(Stack<String> st) {
@@ -323,7 +334,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else {
                     if (hasMoreTwoElement(st)) {
                         switchOperation(num, st);
-
                     } else {
                         showMessage(MESSAGE5);
                         break;
@@ -357,22 +367,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void showHelp() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Ayuda");
-        builder.setMessage("C: Para limpiar la entrada\n" +
+        String msj = "C: Para limpiar la entrada\n" +
                 "R: Para empezar desde cero\n" +
                 "P: Para eliminar el último elemento agregado\n" +
                 "_ :Para introducir espacio entre dos elementos\n" +
-                "↵:Para realizar Operaciones");
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-            }
-        });
+                "↵:Para realizar Operaciones";
 
-        AlertDialog help = builder.create();
-        help.show();
+        CookieBar.Build(MainActivity.this)
+                .setBackgroundColor(R.color.colorBrothers)
+                .setTitle("Ayuda")
+                .setMessage(msj)
+                .setDuration(10000)
+                .setAction("Salir", new OnActionClickListener() {
+                    @Override
+                    public void onClick() {
+                    }
+                }).show();
+
+
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setTitle("Ayuda");
+//        builder.setMessage("C: Para limpiar la entrada\n" +
+//                "R: Para empezar desde cero\n" +
+//                "P: Para eliminar el último elemento agregado\n" +
+//                "_ :Para introducir espacio entre dos elementos\n" +
+//                "↵:Para realizar Operaciones");
+//        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                dialogInterface.cancel();
+//            }
+//        });
+//
+//        AlertDialog help = builder.create();
+//        help.show();
+
+
     }
 
     private boolean specialSpaceCheck(){

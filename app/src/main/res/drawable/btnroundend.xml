@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+ <item android:drawable="@color/colorBrothers" android:state_pressed="true"></item>
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:bottomRightRadius="3dip" android:bottomLeftRadius="3dip"/>
+            <gradient android:angle="-90" android:endColor="@color/colorBrothersD" android:startColor="@color/colorBrothersD" />
+        </shape>
+    </item>
+</selector>

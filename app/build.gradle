@@ -26,5 +26,9 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.github.DamanSingh4321:GentleToast:1.0'
+    compile 'com.alimuzaffar.lib:animated-edit-text:1.0'
+    compile 'org.aviran.cookiebar2:cookiebar2:1.0.5'
+    compile 'com.github.ViksaaSkool:AwesomeSplash:v1.0.0'
     testCompile 'junit:junit:4.12'
 }
